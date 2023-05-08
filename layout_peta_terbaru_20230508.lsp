@@ -35,9 +35,11 @@
   (setq gbox (entlast))
   (command "._move" gbox "" pta PAUSE)
   
-  (setq pt1 (append (cdr (assoc 10 (entget gbox))) '(0)))
+  (setq pta (append (cdr (assoc 10 (entget gbox))) '(0)))
+  (setq pt2 (polar pta 0 panjang))
+  (setq pt3 (polar pt2 (/ pi 2)lebar))
  
-  (gridkoor skala pt1 panjang lebar peta npk npb pta pt3)
+  (gridkoor skala pta panjang lebar peta npk npb pta pt3)
   
 )
 
