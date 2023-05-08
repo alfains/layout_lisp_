@@ -1,6 +1,7 @@
 ;Layout Peta Kerja dan PBT Klarifikasi
 ;NTB
 
+
 (defun c:layoutpeta ()
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
@@ -33,9 +34,10 @@
   
   (setq gbox (entlast))
   (command "._move" gbox "" pta PAUSE)
-
+  
+  (setq pt1 (append (cdr (assoc 10 (entget gbox))) '(0)))
  
-  (gridkoor skala pta panjang lebar peta npk npb pta pt3)
+  (gridkoor skala pt1 panjang lebar peta npk npb pta pt3)
   
 )
 
