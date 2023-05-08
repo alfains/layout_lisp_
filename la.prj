@@ -1,0 +1,16 @@
+;;; VLisp project file [V2.0] la saved to:[e:\2023\_Kerja\01. PTSL\00. DATA\_PENGERJAAN PTSL\_Layout\_lsp] at:[5/8/2023]
+(VLISP-PROJECT-LIST 
+  :NAME
+  la
+  :OWN-LIST
+  ("layout_peta_terbaru_20230508")
+  :FAS-DIRECTORY
+  nil
+  :TMP-DIRECTORY
+  nil
+  :PROJECT-KEYS
+  (:BUILD (:standard))
+  :CONTEXT-ID
+  :AUTOLISP
+)
+;;; EOF

@@ -21,7 +21,7 @@
    )
   
   (setq skala (getreal "\nSkala ? :"))
-  (setq pta '(0 0 0))
+  (setq pta '(263996 550192 0))
   (setq fskala (/ skala 1000))
   (setq panjang (* pp fskala))
   (setq lebar (* ll fskala))  
@@ -33,7 +33,7 @@
   (command "pline" pta pt2 pt3 pt4 pta "") ;membuat box peta
   
   (setq gbox (entlast))
-  (command "._move" gbox "" pta PAUSE)
+  (command "move" gbox "" pta PAUSE)
   
   (setq pta (append (cdr (assoc 10 (entget gbox))) '(0)))
   (setq pt2 (polar pta 0 panjang))
