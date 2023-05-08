@@ -20,7 +20,7 @@
    )
   
   (setq skala (getreal "\nSkala ? :"))
-  (setq pta (getpoint "\nKoordinat Pojok Kiri Bawah"))
+  (setq pta '(0 0 0))
   (setq fskala (/ skala 1000))
   (setq panjang (* pp fskala))
   (setq lebar (* ll fskala))  
@@ -30,6 +30,9 @@
   (setq pt3 (polar pt2 (/ pi 2)lebar))
   (setq pt4 (polar pt3 pi panjang))
   (command "pline" pta pt2 pt3 pt4 pta "") ;membuat box peta
+  
+  (setq gbox (entlast))
+  (command "._move" gbox "" pta PAUSE)
 
  
   (gridkoor skala pta panjang lebar peta npk npb pta pt3)
