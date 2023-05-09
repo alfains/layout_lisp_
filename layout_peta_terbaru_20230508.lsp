@@ -2,7 +2,13 @@
 ;NTB
 
 
-(defun c:layoutpeta ()
+(setq *loc* "C:\\App\\layout_lisp_")
+
+(defun c:setfolder() 
+  (setq *loc* (getstring T "Lokasi Folder : <C:\\layout_lisp_>"))
+)
+
+(defun c:layoutpeta ( / tloc)
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
   (initget 1 "K B")
@@ -10,12 +16,12 @@
   (setq np (getstring "\nNomor Peta <no_tahun>:"))
   (cond 
     ((or (= peta "K")(= peta "k")) (setq pp 300) (setq ll 270)
-	    (command "._layout" "T" "E:/2023/_Kerja/01. PTSL/00. DATA/_PENGERJAAN PTSL/_Layout/20230406_LAYOUT PETA KERJA_T_V2.dwg" "001")
+	    (command "._layout" "T" (strcat *loc* "\\20230406_LAYOUT_PETA_KERJA_TEMPLATE_V2.dwg") "001")
 	    (setq npk (strcat "Peta Kerja " np))
 	    (command "._layout" "R" "001" npk)
 	  )
 	  ((or (= peta "B")(= peta "b")) (setq pp 208) (setq ll 271)
-	    (command "._layout" "T" "E:/2023/_Kerja/01. PTSL/00. DATA/_PENGERJAAN PTSL/_Layout/20230411_LAYOUT_PBT_KLARIFIKASI_TEMPLATE_V2.dwg" "001")
+	    (command "._layout" "T" (strcat *loc* "\\20230411_LAYOUT_PBT_KLARIFIKASI_TEMPLATE_V2.dwg") "001")
 	    (setq npb (strcat "Peta PBTK " np))
 	    (command "._layout" "R" "001" npb)
 	  )
