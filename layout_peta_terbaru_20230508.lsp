@@ -1,6 +1,7 @@
-;Layout Peta Kerja dan PBT Klarifikasi
+;Layouting Peta Kerja dan PBT Klarifikasi 
 ;NTB
-
+;alfainz
+;nyanyaon
 
 (setq *loc* "C:\\App\\layout_lisp_")
 
