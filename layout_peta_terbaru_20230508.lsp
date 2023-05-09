@@ -77,6 +77,8 @@
     (command "line" g3 g4 "")
     (command "line" g5 g6 "")
     (command "line" g7 g8 "")
+    (setq coordline (ssget "x"(list (cons 8 "GRIDKOORD")(cons 0 "line"))))
+    (command "_.group" "c" "*" "group_desc" coordline "")
    
   )
   ;defun grids membuat grid
