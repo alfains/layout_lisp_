@@ -5,8 +5,8 @@
 (defun c:layoutpeta ()
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
-  
-  (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B):"))
+  (initget 1 "K B")
+  (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B) [K/B] <K>:"))
   (setq np (getstring "\nNomor Peta:"))
   (cond ((or (= peta "K")(= peta "k")) (setq pp 300) (setq ll 270)
 	 (command "-layout" "template" "E:/2023/_Kerja/01. PTSL/00. DATA/_PENGERJAAN PTSL/_Layout/20230406_LAYOUT PETA KERJA_TEMPLATE_V2.dwg" "001")
@@ -18,10 +18,10 @@
 	 (setq npb (strcat "Peta PBTK " np))
 	 (command "-layout" "rename" "001" npb)
 	 )
-   )
+  )
   
   (setq skala (getreal "\nSkala ? :"))
-  (setq pta '(263996 550192 0))
+  (setq pta (getvar "viewctr"))
   (setq fskala (/ skala 1000))
   (setq panjang (* pp fskala))
   (setq lebar (* ll fskala))  
@@ -40,6 +40,8 @@
   (setq pt3 (polar pt2 (/ pi 2)lebar))
  
   (gridkoor skala pta panjang lebar peta npk npb pta pt3)
+  
+  (setvar "osmode" osn)
   
 )
 
