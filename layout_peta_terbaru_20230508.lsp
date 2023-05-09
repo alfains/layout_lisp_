@@ -1,6 +1,6 @@
 ;Layouting Peta Kerja dan PBT Klarifikasi 
 ;NTB
-;alfainz
+;alfains
 ;nyanyaon
 
 (setq *loc* "C:\\App\\layout_lisp_")
@@ -27,8 +27,8 @@
 	    (command "._layout" "R" "001" npb)
 	  )
     ((or (= peta "T")(= peta "t")) (setq pp 300) (setq ll 270)
-	    (command "._layout" "T" (strcat *loc* "\\20230328_PBT_A3.dwg.dwg") "001")
-	    (setq npt (strcat "Peta Kerja " np))
+	    (command "._layout" "T" (strcat *loc* "\\20230328_PBT_A3.dwg") "001")
+	    (setq npt (strcat "Peta PBT " np))
 	    (command "._layout" "R" "001" npt)
 	  )
   
