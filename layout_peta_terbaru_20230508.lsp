@@ -12,8 +12,8 @@
 (defun c:layoutpeta ( / tloc)
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
-  (initget 1 "K B")
-  (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B) [K/B] <K>:"))
+  (initget 1 "K B T")
+  (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B) [K/B/T] <K>:"))
   (setq np (getstring "\nNomor Peta <no_tahun>:"))
   (cond 
     ((or (= peta "K")(= peta "k")) (setq pp 300) (setq ll 270)
@@ -26,7 +26,11 @@
 	    (setq npb (strcat "Peta PBTK " np))
 	    (command "._layout" "R" "001" npb)
 	  )
-  )
+    ((or (= peta "T")(= peta "t")) (setq pp 300) (setq ll 270)
+	    (command "._layout" "T" (strcat *loc* "\\20230328_PBT_A3.dwg.dwg") "001")
+	    (setq npt (strcat "Peta Kerja " np))
+	    (command "._layout" "R" "001" npt)
+	  )
   
   (initget 1 "100 250 500")
   (setq skala (getreal "\nSkala [100/250/500] <500> :"))
@@ -48,13 +52,13 @@
   (setq pt2 (polar pta 0 panjang))
   (setq pt3 (polar pt2 (/ pi 2)lebar))
  
-  (gridkoor skala pta panjang lebar peta npk npb pta pt3)
+  (gridkoor skala pta panjang lebar peta npk npt npb pta pt3)
   
   (setvar "osmode" osn)
   
 )
 
-(defun gridkoor (sc pt pa le pet npkk npbb ptaa pt33)
+(defun gridkoor (sc pt pa le pet npkk npbb nptt ptaa pt33)
   (setq PX1 (car pt))
   (setq PY1 (cadr pt))
   (setq jgrid (/ sc 10.0))
@@ -170,6 +174,7 @@
   (cond 
     ((or (= pet "K")(= pet "k")) (setq lay npkk))
 	  ((or (= pet "B")(= pet "b")) (setq lay npbb))
+    ((or (= pet "T")(= pet "t")) (setq lay nptt))
   )
   (setvar "ctab" lay)
   (command "_.mspace")
