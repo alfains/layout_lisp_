@@ -79,7 +79,7 @@
     (command "line" g7 g8 "")
     (setq coordline (ssget "x"(list (cons 8 "GRIDKOORD")(cons 0 "line"))))
     (setq coordpoint (ssget "x"(list (cons 8 "GRIDKOORD")(cons 0 "point"))))
-    (command "_.group" "c" "*" "group_desc" coordpoint ""
+    (command "_.group" "c" "*" "group_desc" coordpoint "")
     (command "_.group" "c" "*" "group_desc" coordline "")
    
   )
