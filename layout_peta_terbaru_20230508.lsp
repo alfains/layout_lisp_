@@ -185,7 +185,6 @@
   (setq ss1 (ssget "x"(list (cons 8 "GRID KOORD text")(cons 0 "text"))))
   (command "chspace" ss1 "" )
   (command "_.pspace") ;membuat label grid ke pspace
-  (command "_.pspace") ;membuat label grid ke pspace
   (cond 
     ((or (= pet "K")(= pet "k"))
      (command "_.ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp))
