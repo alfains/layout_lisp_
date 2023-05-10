@@ -13,7 +13,7 @@
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
   (initget 1 "K B T")
-  (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B) [K/B/T] <K>:"))
+  (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B) or Peta PBT (T) [K/B/T] <K>:"))
   (setq np (getstring "\nNomor Peta <no_peta>:"))
   (cond 
     ((or (= peta "K")(= peta "k")) (setq pp 300) (setq ll 270)
