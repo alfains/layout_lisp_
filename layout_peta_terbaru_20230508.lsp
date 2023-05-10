@@ -14,7 +14,7 @@
   (setvar "osmode" 0)
   (initget 1 "K B T")
   (setq peta (getstring "\nPeta Kerja (K) or PBT Klarifikasi (B) [K/B/T] <K>:"))
-  (setq np (getstring "\nNomor Peta <no_tahun>:"))
+  (setq np (getstring "\nNomor Peta <no_peta>:"))
   (cond 
     ((or (= peta "K")(= peta "k")) (setq pp 300) (setq ll 270)
 	    (command "._layout" "T" (strcat *loc* "\\20230406_LAYOUT_PETA_KERJA_TEMPLATE_V2.dwg") "001")
@@ -25,12 +25,14 @@
 	    (command "._layout" "T" (strcat *loc* "\\20230411_LAYOUT_PBT_KLARIFIKASI_TEMPLATE_V2.dwg") "001")
 	    (setq npb (strcat "Peta PBTK " np))
 	    (command "._layout" "R" "001" npb)
+      (setq nopb (getstring "\nNomor Pengumuman <no_pengumuman>:"))
 	  )
     ((or (= peta "T")(= peta "t")) (setq pp 300) (setq ll 270)
 	    (command "._layout" "T" (strcat *loc* "\\20230328_PBT_A3.dwg") "001")
 	    (setq npt (strcat "Peta PBT " np))
 	    (command "._layout" "R" "001" npt)
 	  )
+  )
   
   (initget 1 "100 250 500")
   (setq skala (getreal "\nSkala [100/250/500] <500> :"))
@@ -52,13 +54,13 @@
   (setq pt2 (polar pta 0 panjang))
   (setq pt3 (polar pt2 (/ pi 2)lebar))
  
-  (gridkoor skala pta panjang lebar peta npk npt npb pta pt3)
+  (gridkoor skala pta panjang lebar peta nopb np npk npb npt pta pt3)
   
   (setvar "osmode" osn)
   
 )
 
-(defun gridkoor (sc pt pa le pet npkk npbb nptt ptaa pt33)
+(defun gridkoor (sc pt pa le pet nopbb npp npkk npbb nptt ptaa pt33)
   (setq PX1 (car pt))
   (setq PY1 (cadr pt))
   (setq jgrid (/ sc 10.0))
@@ -182,4 +184,8 @@
   (setq ss1 (ssget "x"(list (cons 8 "GRID KOORD text")(cons 0 "text"))))
   (command "chspace" ss1 "" )
   (command "_.pspace") ;membuat label grid ke pspace
+  (command "_.pspace") ;membuat label grid ke pspace
+  (command "_.ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp)
+  (command "_.ATTEDIT" "N" "N" "ket2" "nopem" "" "000" nopbb)
+  (command "_.ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
 )
