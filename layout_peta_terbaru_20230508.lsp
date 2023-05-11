@@ -189,11 +189,11 @@
     ((or (= pet "K")(= pet "k"))
      (command "_.ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp))
     ((or (= pet "B")(= pet "b"))
-     (command "_.ATTEDIT" "N" "N" "ket2" "nopem" "" "000" nopbb)
-     (command "_.ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp))
+     (command "._-ATTEDIT" "N" "N" "ket2" "nopem" "" "000" nopbb)
+     (command "._-ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp))
     ((or (= pet "T")(= pet "t"))
      (command "_.ATTEDIT" "N" "N" "ket2" "nopbt" "" "0000" nopbt))
   )
 
-  (command "_.ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
+  (command "._-ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
 )
