@@ -1,5 +1,5 @@
 # layout_lisp_
-## Tentang
+## About
 Tools untuk layouting Peta
 ## Install
 Load .fas file from Tool->AutoLisp->Load Application..
