@@ -1,4 +1,4 @@
-;Layouting Peta Kerja dan PBT Klarifikasi 
+;Layouting Peta Kerja, PBT Klarifikasi, PBT
 ;NTB
 ;alfains
 ;nyanyaon
@@ -28,9 +28,10 @@
       (setq nopb (getstring "\nNomor Pengumuman <no_pengumuman>:"))
 	  )
     ((or (= peta "T")(= peta "t")) (setq pp 300) (setq ll 270)
-	    (command "._layout" "T" (strcat *loc* "\\20230328_PBT_A3.dwg") "001")
+	    (command "._layout" "T" (strcat *loc* "\\20230510_LAYOUT_PETA_PBT_TEMPLATE.dwg") "001")
 	    (setq npt (strcat "Peta PBT " np))
 	    (command "._layout" "R" "001" npt)
+      (setq npbt np)
 	  )
   )
   
@@ -54,13 +55,13 @@
   (setq pt2 (polar pta 0 panjang))
   (setq pt3 (polar pt2 (/ pi 2)lebar))
  
-  (gridkoor skala pta panjang lebar peta nopb np npk npb npt pta pt3)
+  (gridkoor skala pta panjang lebar peta npbt nopb np npk npb npt pta pt3)
   
   (setvar "osmode" osn)
   
 )
 
-(defun gridkoor (sc pt pa le pet nopbb npp npkk npbb nptt ptaa pt33)
+(defun gridkoor (sc pt pa le pet nopbt nopbb npp npkk npbb nptt ptaa pt33)
   (setq PX1 (car pt))
   (setq PY1 (cadr pt))
   (setq jgrid (/ sc 10.0))
@@ -184,8 +185,15 @@
   (setq ss1 (ssget "x"(list (cons 8 "GRID KOORD text")(cons 0 "text"))))
   (command "chspace" ss1 "" )
   (command "_.pspace") ;membuat label grid ke pspace
-  (command "_.pspace") ;membuat label grid ke pspace
-  (command "_.ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp)
-  (command "_.ATTEDIT" "N" "N" "ket2" "nopem" "" "000" nopbb)
-  (command "_.ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
+  (cond 
+    ((or (= pet "K")(= pet "k"))
+     (command "_.ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp))
+    ((or (= pet "B")(= pet "b"))
+     (command "._-ATTEDIT" "N" "N" "ket2" "nopem" "" "000" nopbb)
+     (command "._-ATTEDIT" "N" "N" "ket2" "noptk" "" "000" npp))
+    ((or (= pet "T")(= pet "t"))
+     (command "_.ATTEDIT" "N" "N" "ket2" "nopbt" "" "0000" nopbt))
+  )
+
+  (command "._-ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
 )

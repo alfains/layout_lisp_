@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://df-prod.autocad360.com/jsapi/v3/Autodesk.AutoCAD.js"></script>
+    <title>Layout PBT Klarifikasi dan Peta Kerja</title>
+    <script>
+        function capturePreview() {
+            Acad.Application.activedocument.capturePreview(200, 200).then(success, error);
+        }
+
+        function success(encodedbmp) {
+            var container = document.getElementById('imageContainer');
+            var img = document.createElement('img');
+            var src = "data:image/bmp;base64," + encodedbmp;
+            img.setAttribute('src', src);
+            img.setAttribute('id', 'previewImg');
+            container.appendChild(img);
+        }
+
+        function error() {
+            alert("error");
+        }
+
+        async function getFile() {
+            // Open file picker and destructure the result the first handle
+            const [fileHandle] = await window.showOpenFilePicker();
+            const file = await fileHandle.getFile();
+            return file;
+        }
+    </script>
+</head>
+
+<body>
+    <input type='button' onclick='window.location.reload()' value='Reload' style="display:inline" />
+    <h1>Layout PBT</h1>
+    <label for="locTemplate">Folder Template</label>
+    <input type="button" onclick='execAsync(getFile())' value="Ganti Folder">
+    <input type='button' onclick='capturePreview()' value="capturePreview" />
+    <div id='imageContainer'></div>
+    <p></p>
+</body>
+
+</html>
