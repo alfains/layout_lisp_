@@ -1,2 +1,2 @@
 // Create a palette named "Sample Palette" and load the capture.html file
-Acad.Application.addPalette("TOOL LAYOUTING - NTB", "https://raw.githubusercontent.com/alfains/layout_lisp_/master/ui/palette.html");
+Acad.Application.addPalette("TOOL LAYOUTING - NTB", "C:/App/layout_lisp_/ui/palette.html");

@@ -1,45 +1,380 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+   <head>
+       <title>Draw a transient circle or rectangle</title>
+       <script type="text/javascript" src="https://df-prod.autocad360.com/jsapi/v4/Autodesk.AutoCAD.js ">
+       </script>
+       <script type="text/javascript">
 
-<head>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="https://df-prod.autocad360.com/jsapi/v3/Autodesk.AutoCAD.js"></script>
-    <title>Layout PBT Klarifikasi dan Peta Kerja</title>
-    <script>
-        function capturePreview() {
-            Acad.Application.activedocument.capturePreview(200, 200).then(success, error);
-        }
+           // Some global variables
 
-        function success(encodedbmp) {
-            var container = document.getElementById('imageContainer');
-            var img = document.createElement('img');
-            var src = "data:image/bmp;base64," + encodedbmp;
-            img.setAttribute('src', src);
-            img.setAttribute('id', 'previewImg');
-            container.appendChild(img);
-        }
+           // The cursor for "OnMouseOver", as specified in the UI
+           var cursor = ' ';
 
-        function error() {
-            alert("error");
-        }
+           // Colors for our transient definition, as they are
+           // presented to the user in the UI
+           var colors = new Array();
+           colors['Red'] = "#ff0000";
+           colors['Yellow'] = "#ffff00";
+           colors['Green'] = "#00ff00";
+           colors['Cyan'] = "#00ffff";
+           colors['Blue'] = "#0000ff";
+           colors['Magenta'] = "#ff00ff";
+           colors['White'] = "#ffffff";
 
-        async function getFile() {
-            // Open file picker and destructure the result the first handle
-            const [fileHandle] = await window.showOpenFilePicker();
-            const file = await fileHandle.getFile();
-            return file;
-        }
-    </script>
-</head>
+           // Some point information, as populated by user prompting
+           var pt0 = new Array();
+           var pt1 = new Array();
+           var pt2 = new Array();
+           var pt3 = new Array();
 
-<body>
-    <input type='button' onclick='window.location.reload()' value='Reload' style="display:inline" />
-    <h1>Layout PBT</h1>
-    <label for="locTemplate">Folder Template</label>
-    <input type="button" onclick='execAsync(getFile())' value="Ganti Folder">
-    <input type='button' onclick='capturePreview()' value="capturePreview" />
-    <div id='imageContainer'></div>
-    <p></p>
-</body>
+           // Function used to create the XML definition for the
+           // transient rectangular polyline we want to draw
+           function createPolyline() {
 
+               // Get some parameters from the page
+               var color = document.getElementById('ColCB').value;
+               var linetype = document.getElementById('LTCB').value;
+               var lineweight = document.getElementById('LWCB').value;
+               var filled = document.getElementById('Filled').checked;
+               var cursorType = document.getElementById('Cursor').value;
+               if (cursorType == 'None')
+                   cursor = ' ';
+               else
+                   cursor = ' cursor="' + cursorType + '"';
+
+               // Set the other rectangle corners based on the specified corners
+               pt1[0] = pt0[0];
+               pt1[1] = pt2[1];
+               pt1[2] = pt0[2];
+
+               pt3[0] = pt2[0];
+               pt3[1] = pt0[1];
+               pt3[2] = pt0[2];
+
+               var drawable =
+                 '<?xml version="1.0" encoding="utf-8"?> \
+                   \
+                  <drawable \
+                    xmlns="http://www.autodesk.com/AutoCAD/drawstream.xsd"\
+                    xmlns:t="http://www.autodesk.com/AutoCAD/transient.xsd"\
+                    t:onmouseover ="onmouseover"'
+                     +
+                     cursor
+                     +
+                   '>\
+                     <graphics color="' + colors[color] +
+                       '" id="id1" lineweight="' + lineweight +
+                       '" linetype="' + linetype +
+                       '" filled="' + filled + '">\
+                     <polyline isClosed="true">\
+                       <vertices>\
+                         <vertex>' + pt0.toString() + '</vertex>\
+                         <vertex>' + pt1.toString() + '</vertex>\
+                         <vertex>' + pt2.toString() + '</vertex>\
+                         <vertex>' + pt3.toString() + '</vertex>\
+                       </vertices>\
+                     </polyline>\
+                   </graphics>\
+                 </drawable>';
+
+               return drawable;
+           }
+
+           // Function used to create the XML definition for the
+           // transient circle we want to draw
+           function createCircle() {
+
+               // Get some parameters from the page
+               var color = document.getElementById('ColCB').value;
+               var linetype = document.getElementById('LTCB').value;
+               var lineweight = document.getElementById('LWCB').value;
+               var filled = document.getElementById('Filled').checked;
+               var cursorType = document.getElementById('Cursor').value;
+
+               if (cursorType == 'None')
+                   cursor = ' ';
+               else
+                   cursor = ' cursor="' + cursorType + '"';
+
+               // Use Pythagoras' theorem to get the radius of the circle
+               // based on the points specified
+               var radius =
+                 Math.sqrt(
+                   Math.pow(pt2[0] - pt0[0], 2) +
+                   Math.pow(pt2[1] - pt0[1], 2)
+                 );
+
+               var drawable =
+                 '<?xml version="1.0" encoding="utf-8"?> \
+                   \
+                  <drawable \
+                      xmlns="http://www.autodesk.com/AutoCAD/drawstream.xsd"\
+                      xmlns:t="http://www.autodesk.com/AutoCAD/transient.xsd"\
+                      t:onmouseover ="onmouseover"'
+                    +
+                    cursor
+                    +
+                  '>\
+                    <graphics color="' + colors[color] +
+                      '" id="id1" lineweight="' + lineweight +
+                      '" linetype="' + linetype +
+                      '" filled="' + filled + '">\
+                      <circle center ="' + pt0.toString() +
+                        '" radius ="' + radius.toString() + '"/>\
+                    </graphics>\
+                  </drawable>';
+
+               return drawable;
+           }
+
+           // Function used to draw a rectangular transient object
+           function drawRectangularTransient()
+           {
+               function on1stComplete(args)
+               {
+                   var res = args;
+                   if (res && res.value)
+                   {
+                       pt0[0] = res.value.x;
+                       pt0[1] = res.value.y;
+                       pt0[2] = res.value.z;
+
+                       // Once we have the first point, get the other corner
+                       var pco =
+                           new Acad.PromptCornerOptions(
+                              'Pick second corner point',
+                              new Acad.Point3d(pt0[0], pt0[1], pt0[2])
+                           );
+                       Acad.Editor.getCorner(pco).then(on2ndComplete, onError);
+                   }
+               }
+
+               function on2ndComplete(args)
+               {
+                   var res = args;
+                   if (res && res.value)
+                   {
+                       pt2[0] = res.value.x;
+                       pt2[1] = res.value.y;
+                       pt2[2] = res.value.z;
+
+                       // And when we have both first and second,
+                       // we can generate the XML for the transient
+                       // and ask for it to be drawn
+                       var doc = Acad.Application.activedocument;
+                       var drawable = createPolyline();
+                       var tran = new Acad.Transient();
+                       doc.transientManager.addTransient(tran, drawable);
+                   }
+               }
+
+               function onError(args) {
+                   alert('Unable to create rectangular transient: ' + args);
+               }
+
+               // The body of our function, where we get the first point
+               var ppo =
+                   new Acad.PromptPointOptions(
+                      'Pick first corner point',
+                      new Acad.Point3d(0, 0, 0)
+                   );
+               Acad.Editor.getPoint(ppo).then(on1stComplete, onError);
+            }
+
+           // Function used to draw a circle transient object
+           function drawCircularTransient()
+           {
+               function on1stComplete(args)
+               {
+                   var res = args;
+                   if (res && res.value)
+                   {
+                       pt0[0] = res.value.x;
+                       pt0[1] = res.value.y;
+                       pt0[2] = res.value.z;
+
+                       // Once we have the center point, get one on the
+                       // circumference
+                       var ppo = new Acad.PromptPointOptions('Pick point on circle');
+                       ppo.useBasePoint = true;
+                       ppo.basePoint = new Acad.Point3d(pt0[0], pt0[1], pt0[2]);
+                       Acad.Editor.getPoint(ppo).then(on2ndComplete, onError);
+                   }
+               }
+
+               function on2ndComplete(args) {
+
+                   var res = args;
+                   if (res && res.value) {
+                       pt2[0] = res.value.x;
+                       pt2[1] = res.value.y;
+                       pt2[2] = res.value.z;
+
+                       // And when we have both first and second,
+                       // we can generate the XML for the transient
+                       // and ask for it to be drawn
+                       var doc = Acad.Application.activedocument;
+                       var drawable = createCircle();
+                       var tran = new Acad.Transient();
+                       doc.transientManager.addTransient(tran, drawable);
+                   }
+               }
+
+               function onError(args) {
+                   alert('Unable to create circle transient: ' + args);
+               }
+
+               // The body of our function, where we get the first point
+               var ppo =
+                   new Acad.PromptPointOptions(
+                          'Pick center point',
+                          new Acad.Point3d(0, 0, 0)
+                       );
+
+               Acad.Editor.getPoint(ppo).then(on1stComplete, onError);
+           }
+       </script>
+
+       <style type="text/css">
+           td, body {
+               font-family: sans-serif;
+               font-size: 10pt;
+           }
+
+           body {
+               background-color: #686868;
+               padding: 0;
+               margin: 5px 5px 5px 5px;
+               color: #FFF;
+           }
+
+           textarea {
+               font-family: Consolas;
+               font-size: 8pt;
+           }
+       </style>
+   </head>
+
+   <body>
+
+       <h3>Transient circle or rectangle</h3>
+       <table border="0">
+           <tr>
+               <td align='right'>Color</td>
+               <td>
+                   <select id='ColCB'>
+                       <option selected="selected">Red</option>
+                       <option>Yellow</option>
+                       <option>Green</option>
+                       <option>Cyan</option>
+                       <option>Blue</option>
+                       <option>Magenta</option>
+                       <option>White</option>
+                   </select>
+               </td>
+           </tr>
+           <tr>
+               <td align='right'>LineType</td>
+               <td>
+                   <select id='LTCB'>
+                       <option selected="selected">LineTypeSolid</option>
+                       <option>Dashed</option>
+                       <option>Dotted</option>
+                       <option>Dash_Dot</option>
+                       <option>Short_Dash</option>
+                       <option>Medium_Dash</option>
+                       <option>Long_Dash</option>
+                       <option>Short_Dash_X2</option>
+                       <option>Medium_Dash_X2</option>
+                       <option>Long_Dash_X2</option>
+                       <option>Medium_Long_Dash</option>
+                       <option>Medium_Dash_Short_Dash_Short_Dash</option>
+                       <option>Long_Dash_Short_Dash</option>
+                       <option>Long_Dash_Dot_Dot</option>
+                       <option>Long_Dash_Dot</option>
+                       <option>Medium_Dash_Dot_Short_Dash_Dot</option>
+                       <option>Sparse_Dot</option>
+                       <option>Solid_6_Pixels_Blank_6_Pixels</option>
+                   </select>
+               </td>
+           </tr>
+           <tr>
+               <td align='right'>LineWeight</td>
+               <td>
+                   <select id='LWCB'>
+                       <option>0</option>
+                       <option>5</option>
+                       <option>9</option>
+                       <option>13</option>
+                       <option>15</option>
+                       <option>18</option>
+                       <option>20</option>
+                       <option>25</option>
+                       <option selected="selected">30</option>
+                       <option>35</option>
+                       <option>40</option>
+                       <option>50</option>
+                       <option>53</option>
+                       <option>60</option>
+                       <option>70</option>
+                       <option>80</option>
+                       <option>90</option>
+                       <option>100</option>
+                       <option>106</option>
+                       <option>120</option>
+                       <option>140</option>
+                       <option>158</option>
+                       <option>200</option>
+                       <option>211</option>
+                   </select>
+               </td>
+           </tr>
+           <tr>
+               <td align='right'>Filled</td>
+               <td><input type='checkbox' id='Filled' /></td>
+           </tr>
+           <tr>
+               <td align='right'>Cursor</td>
+               <td>
+                   <select id='Cursor'
+                           title='Cursor to be displayed on hover'>
+                       <option selected="selected">None</option>
+                       <option>None</option>
+                       <option>Arrow</option>
+                       <option>Ibeam</option>
+                       <option>Wait</option>
+                       <option>Cross</option>
+                       <option>UpArrow</option>
+                       <option>SizeNWSE</option>
+                       <option>SizeNESW</option>
+                       <option>SizeWE</option>
+                       <option>SizeNS</option>
+                       <option>SizeAll</option>
+                       <option>No</option>
+                       <option>Hand</option>
+                       <option>AppStarting</option>
+                       <option>Help</option>
+                   </select>
+               </td>
+           </tr>
+           <tr>
+               <th>&nbsp;</th>
+               <td>
+                   <input type='button'
+                          style="width: 220px"
+                          onclick='drawRectangularTransient()'
+                          value='Draw Rectangle Transient' />
+               </td>
+           </tr>
+           <tr>
+               <th>&nbsp;</th>
+               <td>
+                   <input type='button'
+                          style="width: 220px"
+                          onclick='drawCircularTransient()'
+                          value='Draw Circle Transient' />
+               </td>
+           </tr>
+      </table>
+   </body>
 </html>
