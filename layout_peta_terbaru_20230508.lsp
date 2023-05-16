@@ -2,6 +2,7 @@
 ;NTB
 
 ;alfains
+
 ;nyanyaon
 
 (setq *loc* "C:\\App\\layout_lisp_")
