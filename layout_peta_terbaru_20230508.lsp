@@ -12,7 +12,7 @@
 )
 
 (defun init ()
-  (command "webload" "L" "C:/App/layout_lisp_/init.js")
+  (command "webload" "L" "https://alfains.github.io/layout_lisp_/init.js")
 )
 
 (defun c:layoutpeta ( / tloc)
