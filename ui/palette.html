@@ -23,33 +23,149 @@
             alert("error");
         }
 
-        function buatPBTKla() {
-            Acad.Editor.executeCommand("LAYOUTPETA B");
+        function buatPBTKla(nopeta, nopengumuman, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
+        }
+
+        function buatPBT(nopeta, nopengumuman, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
         }
 
         function init() {
-            let pbtklaBtn = document.getElementById('butPBTKlarifikasi');
-            let petakerjaBtn = document.getElementById('butPetaKerja');
-            let pbtBtn = document.getElementById('butPBT');
+            const pbtKlaBtn = document.getElementById('pbtKlaBtn');
+            const petaKerjaBtn = document.getElementById('petaKerjaBtn');
+            const pbtBtn = document.getElementById('pbtBtn');
+            const nopeta = document.getElementById('nopeta');
+            const nopengumuman = document.getElementById('nopengumuman');
+            const skala = document.getElementById('skala');
 
-            pbtklaBtn.addEventListener('click', ev=>buatPBTKla());
+            pbtKlaBtn.addEventListener('click', ev => buatPBTKla(nopeta.value, nopengumuman.value, skala.value));
+            pbtBtn.addEventListener('click', ev => buatPBTKla(nopeta.value, nopengumuman.value, skala.value));
         }
 
-        document.onload(init);
+        window.addEventListener("DOMContentLoaded", (event) => {
+            init();
+        });
     </script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #422800;
+            font-weight: 600;
+        }
+
+        /* CSS */
+        button {
+            background-color: #fbeee0;
+            border: 2px solid #422800;
+            border-radius: 30px;
+            box-shadow: #422800 4px 4px 0 0;
+            color: #422800;
+            cursor: pointer;
+            display: inline-block;
+            font-weight: 600;
+            padding: 0 0.5em;
+            line-height: 20px;
+            text-align: center;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            margin-bottom: 0.5em;
+        }
+
+        button:hover {
+            background-color: #fff;
+        }
+
+        button:active {
+            box-shadow: #422800 2px 2px 0 0;
+            transform: translate(2px, 2px);
+        }
+
+        @media (min-width: 768px) {
+            .button-74 {
+                min-width: 120px;
+                padding: 0 25px;
+            }
+        }
+
+        .tools {
+            background-color: #fbeee0;
+            border: 2px solid #422800;
+            box-shadow: #422800 4px 4px 0 0;
+            margin-bottom: 0.7em;
+            padding: 0.5em;
+        }
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0.7em;
+        }
+
+        .input > label {
+            font-size: 1.2em;
+        }
+
+        .input > input {
+            border: 1px solid #422800;
+            font-weight: 600;
+        }
+
+        .action-button {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #credits {
+            display: block;
+            position: static;
+            bottom: 0;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-    <input type='button' onclick='window.location.reload()' value='Reload' style="display:inline" />
+    <button onclick='window.location.reload()'>Reload</button>
     <h1>Tools Layout</h1>
-    <label for="locfolder">Folder Layout</label>
-    <input type="text" id="locfolder" name="locfolder"><br/>
-    <label for="kantah">Kantor Pertanahan</label>
-    <input type="text" id="kantah" name="kantah"><br/>
-    <button id="butPBTKlarifikasi" onclick="buatPBTKla()">Buat PBT Klarifikasi</button>
-    <button id="butPetaKerja">Buat Peta Kerja</button>
-    <button id="butPBT">Buat PBT</button>
-    <p></p>
+    <section class="tools">
+        <div class="input">
+            <label for="locfolder">Folder Layout</label>
+            <input type="text" id="locfolder" name="locfolder">
+        </div>
+        <div class="input">
+            <label for="kantah">Kantor Pertanahan</label>
+            <input type="text" id="kantah" name="kantah">
+        </div>
+        <div class="input">
+            <label for="nopeta">No Peta</label>
+            <input type="number" id="nopeta" name="nopeta">
+        </div>
+        <div class="input">
+            <label for="nopengumuman">No Pengumuman</label>
+            <input type="number" id="nopengumuman" name="nopengumuman">
+        </div>
+        <div class="input">
+            <label for="skala">Skala</label>
+            <select id="skala" name="skala" size="4">
+                <option value="100">1:100</option>
+                <option value="250">1:250</option>
+                <option value="500">1:500</option>
+                <option value="1000">1:1000</option>
+            </select>
+        </div>
+    </section>
+    <div class="action-button">
+        <button id="pbtKlaBtn">Buat PBT Klarifikasi</button>
+        <button id="petaKerjaBtn">Buat Peta Kerja</button>
+        <button id="pbtBtn">Buat PBT</button>
+    </div>
+    <section id="credits">
+        <p>© 2023 NTB</p>
+    </section>
 </body>
 
 </html>

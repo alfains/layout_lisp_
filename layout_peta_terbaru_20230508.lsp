@@ -41,8 +41,8 @@
 	  )
   )
   
-  (initget 1 "100 250 500")
-  (setq skala (getreal "\nSkala [100/250/500] <500> :"))
+  (initget 1 "100 250 500 1000")
+  (setq skala (getreal "\nSkala [100/250/500/1000] <500> :"))
   (setq pta (getvar "viewctr"))
   (setq fskala (/ skala 1000))
   (setq panjang (* pp fskala))
