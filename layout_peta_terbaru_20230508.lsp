@@ -10,6 +10,10 @@
   (setq *loc* (getstring T "Lokasi Folder : <C:\\layout_lisp_>"))
 )
 
+(defun init ()
+  (command "webload" "L" "C:/App/layout_lisp_/init.js")
+)
+
 (defun c:layoutpeta ( / tloc)
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
@@ -43,7 +47,6 @@
   (setq panjang (* pp fskala))
   (setq lebar (* ll fskala))  
   (command "layer" "M" "GRIDLAYOUT" "")  
-  (setq fskala (/ skala 1000))
   (setq pt2 (polar pta 0 panjang))
   (setq pt3 (polar pt2 (/ pi 2)lebar))
   (setq pt4 (polar pt3 pi panjang))
@@ -198,3 +201,5 @@
 
   (command "._-ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
 )
+
+(init)
