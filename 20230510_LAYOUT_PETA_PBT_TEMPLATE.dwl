@@ -1,3 +1,0 @@
-HP
-LAPTOP-SI0CNF5P 
-Tuesday, May 16, 2023  14:10:17
