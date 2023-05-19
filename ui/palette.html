@@ -3,6 +3,15 @@
 
 <head>
     <meta charset="utf-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DG97XGEVE4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DG97XGEVE4');
+    </script>
     <script type="text/javascript" src="https://df-prod.autocad360.com/jsapi/v4/Autodesk.AutoCAD.js"></script>
     <title>LAYOUT LISP - NTB</title>
     <script>
@@ -27,8 +36,12 @@
             Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
         }
 
-        function buatPBT(nopeta, nopengumuman, skala) {
-            Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
+        function buatPBT(nopeta, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA T ${nopeta} ${skala}`);
+        }
+
+        function buatPetaKerja(nopeta, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA K ${nopeta} ${skala}`);
         }
 
         function init() {
@@ -40,7 +53,8 @@
             const skala = document.getElementById('skala');
 
             pbtKlaBtn.addEventListener('click', ev => buatPBTKla(nopeta.value, nopengumuman.value, skala.value));
-            pbtBtn.addEventListener('click', ev => buatPBTKla(nopeta.value, nopengumuman.value, skala.value));
+            pbtBtn.addEventListener('click', ev => buatPBT(nopeta.value, skala.value));
+            petaKerjaBtn.addEventListener('click', ev => buatPetaKerja(nopeta.value, skala.value));
         }
 
         window.addEventListener("DOMContentLoaded", (event) => {
@@ -105,11 +119,11 @@
             margin-bottom: 0.7em;
         }
 
-        .input > label {
+        .input>label {
             font-size: 1.2em;
         }
 
-        .input > input {
+        .input>input {
             border: 1px solid #422800;
             font-weight: 600;
         }

@@ -6,13 +6,40 @@
 ;nyanyaon
 
 (setq *loc* "C:\\App\\layout_lisp_")
+(vl-load-com)
+(setvar "TRUSTEDDOMAINS" (strcat (getvar "TRUSTEDDOMAINS") ";alfains.github.io/*"))
+(setvar "SECUREREMOTEACCESS" 0)
+
+(defun download( URL / acadObj doc Utility DestFile)
+    ;; This example will prompt the user for a URL to download and will verify that
+    ;; a proper URL was entered.  After downloading, the example will provide information
+    ;; about the downloaded drawing.
+    ;;
+    ;; * Note: Remember to delete the downloaded file from your disk drive when finished.
+    (setq acadObj (vlax-get-acad-object))
+    (setq doc (vla-get-ActiveDocument acadObj))
+
+    (setq Utility (vla-get-Utility doc))   ;; Connect to Utility object
+    
+    (if (/= URL "")
+      (progn
+        (if (= (vla-IsURL Utility URL) :vlax-false)
+	        (alert "The URL you entered is not valid.  Make sure the syntax is a valid URL.")
+		      (vla-GetRemoteFile Utility URL 'DestFile :vlax-true)
+	      )
+        DestFile
+	    )
+    )
+)
 
 (defun c:setfolder() 
   (setq *loc* (getstring T "Lokasi Folder : <C:\\layout_lisp_>"))
 )
 
-(defun init ()
-  (command "._webload" "L" "https://alfains.github.io/layout_lisp_/init.js")
+(defun init ( / jsInitFile)
+  ; (setq jsInitFile (download "https://alfains.github.io/layout_lisp_/init.js"))
+  (setq jsInitFile "C:/App/layout_lisp_/initOffline.js")
+  (command "._webload" "L" jsInitFile)
 )
 
 (defun c:layoutpeta ( / tloc)
