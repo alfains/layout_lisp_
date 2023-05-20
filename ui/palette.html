@@ -15,37 +15,23 @@
     <script type="text/javascript" src="https://df-prod.autocad360.com/jsapi/v4/Autodesk.AutoCAD.js"></script>
     <title>LAYOUT LISP - NTB</title>
     <script>
-        function capturePreview() {
-            Acad.Application.activedocument.capturePreview(200, 200).then(success, error);
-        }
-
-        function success(encodedbmp) {
-            var container = document.getElementById('imageContainer');
-            var img = document.createElement('img');
-            var src = "data:image/bmp;base64," + encodedbmp;
-            img.setAttribute('src', src);
-            img.setAttribute('id', 'previewImg');
-            container.appendChild(img);
-        }
-
         function error() {
             alert("error");
         }
 
-        function changeThemeLocation(loc) {
-            Acad.Editor.executeCommand()
-        }
-
         function buatPBTKla(nopeta, nopengumuman, skala) {
             Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
+            addCounterPeta();
         }
 
         function buatPBT(nopeta, skala) {
             Acad.Editor.executeCommand(`LAYOUTPETA T ${nopeta} ${skala}`);
+            addCounterPeta();
         }
 
         function buatPetaKerja(nopeta, skala) {
             Acad.Editor.executeCommand(`LAYOUTPETA K ${nopeta} ${skala}`);
+            addCounterPeta();
         }
 
         function init() {
@@ -71,124 +57,50 @@
             init();
         });
     </script>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            color: #422800;
-            font-weight: 600;
-        }
-
-        /* CSS */
-        button {
-            background-color: #fbeee0;
-            border: 2px solid #422800;
-            border-radius: 30px;
-            box-shadow: #422800 4px 4px 0 0;
-            color: #422800;
-            cursor: pointer;
-            display: inline-block;
-            font-weight: 600;
-            padding: 0 0.5em;
-            line-height: 20px;
-            text-align: center;
-            text-decoration: none;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            margin-bottom: 0.5em;
-        }
-
-        button:hover {
-            background-color: #fff;
-        }
-
-        button:active {
-            box-shadow: #422800 2px 2px 0 0;
-            transform: translate(2px, 2px);
-        }
-
-        @media (min-width: 768px) {
-            .button-74 {
-                min-width: 120px;
-                padding: 0 25px;
-            }
-        }
-
-        .tools {
-            background-color: #fbeee0;
-            border: 2px solid #422800;
-            box-shadow: #422800 4px 4px 0 0;
-            margin-bottom: 0.7em;
-            padding: 0.5em;
-        }
-
-        .input {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 0.7em;
-        }
-
-        .input>label {
-            font-size: 1.2em;
-        }
-
-        .input>input {
-            border: 1px solid #422800;
-            font-weight: 600;
-        }
-
-        .action-button {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #credits {
-            display: block;
-            position: static;
-            bottom: 0;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <button onclick='window.location.reload()'>Reload</button>
+    <button class="action-button" onclick='window.location.reload()'>Reload</button>
+    <button class="action-button" onclick='install()'>Install</button>
+    <button class="action-button" onclick='remove()'>Close</button>
     <h1>Tools Layout</h1>
     <section class="tools">
         <div class="input">
             <label for="locfolder">Folder Layout</label>
-            <input type="text" id="locfolder" name="locfolder">
+            <input type="text" id="locfolder" name="locfolder" value="C:/layout">
+            <button class="action-button-2" id="bukaFolder">Buka Folder</button>
         </div>
         <div class="input">
             <label for="kantah">Kantor Pertanahan</label>
-            <input type="text" id="kantah" name="kantah">
+            <input type="text" id="kantah" name="kantah" value="Kota Mataram">
         </div>
         <div class="input">
             <label for="nopeta">No Peta</label>
-            <input type="number" id="nopeta" name="nopeta">
+            <input type="number" id="nopeta" name="nopeta" value="1">
         </div>
         <div class="input">
             <label for="nopengumuman">No Pengumuman</label>
-            <input type="number" id="nopengumuman" name="nopengumuman">
+            <input type="number" id="nopengumuman" name="nopengumuman" value="1">
         </div>
         <div class="input">
             <label for="skala">Skala</label>
             <select id="skala" name="skala" size="4">
                 <option value="100">1:100</option>
                 <option value="250">1:250</option>
-                <option value="500">1:500</option>
+                <option value="500" selected>1:500</option>
                 <option value="1000">1:1000</option>
             </select>
         </div>
     </section>
-    <div class="action-button">
-        <button id="pbtKlaBtn">Buat PBT Klarifikasi</button>
-        <button id="petaKerjaBtn">Buat Peta Kerja</button>
-        <button id="pbtBtn">Buat PBT</button>
+    <div class="action--section">
+        <button id="pbtKlaBtn" class="action-button">Buat PBT Klarifikasi</button>
+        <button id="petaKerjaBtn" class="action-button">Buat Peta Kerja</button>
+        <button id="pbtBtn" class="action-button">Buat PBT</button>
     </div>
     <section id="credits">
-        <p>© 2023 NTB</p>
+        <p>© 2023 NTB - Alfainz : Nyanyaon
+        </p>
     </section>
 </body>
 
