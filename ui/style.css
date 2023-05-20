@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #422800;
+    font-weight: 600;
+}
+
+.action-button {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    padding: 0 0.5em;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin-bottom: 0.5em;
+}
+
+.action-button:hover {
+    background-color: #fff;
+}
+
+.action-button:active {
+    box-shadow: #422800 2px 2px 0 0;
+    transform: translate(2px, 2px);
+}
+
+.action-button-2 {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    padding: 0 0.5em;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin-top: 0.5em;
+}
+
+.action-button-2:hover {
+    background-color: #fff;
+    box-shadow: #422800 0px 2px 0 0;
+}
+
+.action-button-2:active {
+    box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.tools {
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    box-shadow: #422800 4px 4px 0 0;
+    margin-bottom: 0.7em;
+    padding: 0.5em;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.7em;
+}
+
+.input>label {
+    font-size: 1.2em;
+}
+
+.input>input {
+    border: 1px solid #422800;
+    font-weight: 600;
+}
+
+.action--section {
+    display: flex;
+    flex-direction: column;
+}
+
+#credits {
+    display: block;
+    position: static;
+    bottom: 0;
+    text-align: center;
+}
