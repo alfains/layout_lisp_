@@ -60,8 +60,8 @@
 
 (defun init ( / jsInitFile)
   (vl-mkdir "c:/layout")
-  ; (setq jsInitFile (download "https://alfains.github.io/layout_lisp_/init.js"))
-  (setq jsInitFile "C:/App/layout_lisp_/initOffline.js")
+  (setq jsInitFile (download "https://alfains.github.io/layout_lisp_/init.js"))
+  ; (setq jsInitFile "C:/App/layout_lisp_/initOffline.js")
   (command "._webload" "L" jsInitFile)
   (setvar "SECUREREMOTEACCESS" 1)
 )
