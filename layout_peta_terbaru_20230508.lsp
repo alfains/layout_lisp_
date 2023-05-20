@@ -11,11 +11,6 @@
 (setvar "SECUREREMOTEACCESS" 0)
 
 (defun download( URL / acadObj doc Utility DestFile)
-    ;; This example will prompt the user for a URL to download and will verify that
-    ;; a proper URL was entered.  After downloading, the example will provide information
-    ;; about the downloaded drawing.
-    ;;
-    ;; * Note: Remember to delete the downloaded file from your disk drive when finished.
     (setq acadObj (vlax-get-acad-object))
     (setq doc (vla-get-ActiveDocument acadObj))
 
@@ -32,8 +27,11 @@
     )
 )
 
-(defun c:setfolder() 
-  (setq *loc* (getstring T "Lokasi Folder : <C:\\layout_lisp_>"))
+(defun c:setThemeFolder( folderTheme ) 
+  (if (/= folderTheme "")
+    (setq *loc* folderTheme)
+    (setq *loc* (getstring T "Lokasi Folder : <C:\\layout_lisp_>"))
+  )
 )
 
 (defun init ( / jsInitFile)
