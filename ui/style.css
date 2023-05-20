@@ -59,6 +59,18 @@ body {
     box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
 }
 
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: no-drop
+}
+
+.green {
+    background: #e3fbe0;
+}
+
 .tools {
     background-color: #fbeee0;
     border: 2px solid #422800;

@@ -19,6 +19,42 @@
             alert("error");
         }
 
+        function success(arg) {
+            console.log(arg);
+        }
+
+        function remove() {
+            localStorage.clear();
+        }
+
+        function enableApp(arg) {
+            if(arg._value == 0) {
+                console.log("exit");
+                return;
+            }
+            const installBtn = document.getElementById('installbtn');
+            pbtKlaBtn.disabled = false;
+            petaKerjaBtn.disabled = false;
+            pbtBtn.disabled = false;
+            installBtn.classList.remove("green");
+            installBtn.disabled = true;
+        }
+
+        function checkTemplates() {
+            Acad.Editor.executeCommand("CHECKTEMPLATES");
+            Acad.SystemVariableCollection.getSystemVariable("REGENMODE").then(enableApp, error);
+        }
+
+        function install() {
+            Acad.Editor.executeCommand("DOWNLOADLAYOUT");
+            enableApp({_value: 1});
+        }
+
+        function addCounterPeta() {
+            const nopeta = document.getElementById('nopeta');
+            nopeta.value = new Number(nopeta.value) + 1;
+        }
+
         function buatPBTKla(nopeta, nopengumuman, skala) {
             Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
             addCounterPeta();
@@ -34,10 +70,19 @@
             addCounterPeta();
         }
 
+        function changeThemeLocation(loc) {
+            Acad.Editor.executeCommandAsync(`SETTHEMEFOLDER ${loc}`);
+        }
+
         function init() {
             const pbtKlaBtn = document.getElementById("pbtKlaBtn");
             const petaKerjaBtn = document.getElementById("petaKerjaBtn");
             const pbtBtn = document.getElementById("pbtBtn");
+            const openFolderBtn = document.getElementById("bukaFolder");
+
+            pbtKlaBtn.disabled = true;
+            petaKerjaBtn.disabled = true;
+            pbtBtn.disabled = true;
 
             const templateLocInput = document.getElementById("locfolder");
             const nopeta = document.getElementById("nopeta");
@@ -46,6 +91,11 @@
 
 
             templateLocInput.addEventListener("change", ev => changeThemeLocation(templateLocInput.value));
+            openFolderBtn.addEventListener("click", ev => {
+                let locationVal = templateLocInput.value;
+                locationVal = locationVal.replace(new RegExp("/", "g"), `\\\\`);
+                Acad.Editor.executeCommand(`(startapp "explorer /e," "${locationVal}")`);
+            });
 
             pbtKlaBtn.addEventListener("click", ev => buatPBTKla(nopeta.value, nopengumuman.value, skala.value));
             pbtBtn.addEventListener("click", ev => buatPBT(nopeta.value, skala.value));
@@ -54,6 +104,7 @@
         }
 
         window.addEventListener("DOMContentLoaded", (event) => {
+            checkTemplates();
             init();
         });
     </script>
@@ -62,7 +113,7 @@
 
 <body>
     <button class="action-button" onclick='window.location.reload()'>Reload</button>
-    <button class="action-button" onclick='install()'>Install</button>
+    <button class="action-button green" id="installbtn" onclick='install()'>Install</button>
     <button class="action-button" onclick='remove()'>Close</button>
     <h1>Tools Layout</h1>
     <section class="tools">

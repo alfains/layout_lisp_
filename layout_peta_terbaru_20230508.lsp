@@ -5,7 +5,10 @@
 
 ;nyanyaon
 
-(setq *loc* "C:\\App\\layout_lisp_")
+(setq *loc* "C:/layout")
+(setq *pbtkla* "LAYOUT_PBT_KLARIFIKASI_TEMPLATE.dwg")
+(setq *pbt* "LAYOUT_PETA_PBT_TEMPLATE.dwg")
+(setq *petakerja* "LAYOUT_PETA_KERJA_TEMPLATE.dwg")
 (vl-load-com)
 (setvar "TRUSTEDDOMAINS" (strcat (getvar "TRUSTEDDOMAINS") ";alfains.github.io/*"))
 (setvar "SECUREREMOTEACCESS" 0)
@@ -27,14 +30,36 @@
     )
 )
 
-(defun c:setThemeFolder( folderTheme ) 
-  (if (/= folderTheme "")
-    (setq *loc* folderTheme)
-    (setq *loc* (getstring T "Lokasi Folder : <C:\\layout_lisp_>"))
+(defun c:downloadlayout()
+  (setvar "SECUREREMOTEACCESS" 0)
+  (setq locpbtkla (download "https://alfains.github.io/layout_lisp_/templates/20230411_LAYOUT_PBT_KLARIFIKASI_TEMPLATE_V2.dwg"))
+  (setq locpbt (download "https://alfains.github.io/layout_lisp_/templates/20230510_LAYOUT_PETA_PBT_TEMPLATE.dwg"))
+  (setq locpetakerja (download "https://alfains.github.io/layout_lisp_/templates/20230406_LAYOUT_PETA_KERJA_TEMPLATE_V2.dwg"))
+  
+  (vl-file-copy locpbtkla (strcat *loc* "/" *pbtkla*))
+  (vl-file-copy locpbt (strcat *loc* "/" *pbt*))
+  (vl-file-copy locpetakerja (strcat *loc* "/" *petakerja*))
+)
+
+(defun c:setthemefolder()
+    (setq *loc* (getstring T "Lokasi Folder : <C:\\layout>"))
+)
+
+(defun c:checktemplates ()
+  (if (and (findfile (strcat *loc* "/" *petakerja*)) 
+           (findfile (strcat *loc* "/" *pbt*))  
+           (findfile (strcat *loc* "/" *pbtkla*))
+      )
+    (setvar "REGENMODE" 1)
+    (setvar "REGENMODE" 0)
   )
+  
+  
+ 
 )
 
 (defun init ( / jsInitFile)
+  (vl-mkdir "c:/layout")
   ; (setq jsInitFile (download "https://alfains.github.io/layout_lisp_/init.js"))
   (setq jsInitFile "C:/App/layout_lisp_/initOffline.js")
   (command "._webload" "L" jsInitFile)
@@ -42,6 +67,8 @@
 )
 
 (defun c:layoutpeta ( / tloc)
+  (setq cmddia (getvar "CMDDIA"))
+  (setvar "CMDDIA" 0)
   (setq osn (getvar "osmode"))
   (setvar "osmode" 0)
   (initget 1 "K B T")
@@ -49,18 +76,18 @@
   (setq np (getstring "\nNomor Peta <no_peta>:"))
   (cond 
     ((or (= peta "K")(= peta "k")) (setq pp 300) (setq ll 270)
-	    (command "._layout" "T" (strcat *loc* "\\20230406_LAYOUT_PETA_KERJA_TEMPLATE_V2.dwg") "001")
+	    (command "._layout" "T" (strcat *loc* "/" *petakerja*) "001")
 	    (setq npk (strcat "Peta Kerja " np))
 	    (command "._layout" "R" "001" npk)
 	  )
 	  ((or (= peta "B")(= peta "b")) (setq pp 208) (setq ll 271)
-	    (command "._layout" "T" (strcat *loc* "\\20230411_LAYOUT_PBT_KLARIFIKASI_TEMPLATE_V2.dwg") "001")
+	    (command "._layout" "T" (strcat *loc* "/" *pbtkla*) "001")
 	    (setq npb (strcat "Peta PBTK " np))
 	    (command "._layout" "R" "001" npb)
       (setq nopb (getstring "\nNomor Pengumuman <no_pengumuman>:"))
 	  )
     ((or (= peta "T")(= peta "t")) (setq pp 300) (setq ll 270)
-	    (command "._layout" "T" (strcat *loc* "\\20230510_LAYOUT_PETA_PBT_TEMPLATE.dwg") "001")
+	    (command "._layout" "T" (strcat *loc* "/" *pbt*) "001")
 	    (setq npt (strcat "Peta PBT " np))
 	    (command "._layout" "R" "001" npt)
       (setq npbt np)
@@ -226,7 +253,8 @@
      (command "_.ATTEDIT" "N" "N" "ket2" "nopbt" "" "0000" nopbt))
   )
 
-  (command "._-ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc) ;edit attr nomor peta dan skala
+  (command "._-ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc)
+  (graphscr);edit attr nomor peta dan skala
 )
 
 (init)
