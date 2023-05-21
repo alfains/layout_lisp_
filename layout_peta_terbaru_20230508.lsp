@@ -9,9 +9,6 @@
 (setq *pbtkla* "LAYOUT_PBT_KLARIFIKASI_TEMPLATE.dwg")
 (setq *pbt* "LAYOUT_PETA_PBT_TEMPLATE.dwg")
 (setq *petakerja* "LAYOUT_PETA_KERJA_TEMPLATE.dwg")
-(vl-load-com)
-(setvar "TRUSTEDDOMAINS" (strcat (getvar "TRUSTEDDOMAINS") ";alfains.github.io/*"))
-(setvar "SECUREREMOTEACCESS" 0)
 
 (defun download( URL / acadObj doc Utility DestFile)
     (setq acadObj (vlax-get-acad-object))
@@ -53,12 +50,10 @@
     (setvar "REGENMODE" 1)
     (setvar "REGENMODE" 0)
   )
-  
-  
- 
 )
 
 (defun init ( / jsInitFile)
+  (setvar "SECUREREMOTEACCESS" 0)
   (vl-mkdir "c:/layout")
   (setq jsInitFile (download "https://alfains.github.io/layout_lisp_/init.js"))
   ; (setq jsInitFile "C:/App/layout_lisp_/initOffline.js")
@@ -257,4 +252,14 @@
   (graphscr);edit attr nomor peta dan skala
 )
 
-(init)
+(if (= (atoi (substr (ver) 13)) 2021) 
+  (progn
+    (vl-load-com)
+    (setvar "TRUSTEDDOMAINS" (strcat (getvar "TRUSTEDDOMAINS") ";alfains.github.io/*"))
+    (prompt "app load success")
+    (init)
+  )
+  (progn
+    (prompt "Use 2021 Only") 
+  )
+)

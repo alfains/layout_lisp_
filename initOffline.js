@@ -4,6 +4,6 @@ function run() {
     localStorage.setItem("lpal", 1);
 }
 
-if(localStorage.getItem("lpal") != 1) {
+if(localStorage.getItem("lpal") == 1) {
     run();
 }
