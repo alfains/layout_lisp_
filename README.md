@@ -1,6 +1,9 @@
 # layout_lisp_
 ## About
-Tools untuk layouting Peta
+New fetaure added to Tools untuk layouting Peta
+- using netload
+- selected feature grid and extend
+- table generation
 ## Install
 Load .fas file from Tool->AutoLisp->Load Application..
 ## Credits
