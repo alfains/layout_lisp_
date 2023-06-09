@@ -1,1 +1,3 @@
-(setq locDir "c:/layout_peta")
+(setq templateDir "c:/layout_peta")
+(setq )
+
