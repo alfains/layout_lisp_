@@ -5,7 +5,7 @@
 
 ;nyanyaon
 
-(setq *loc* "C:/layoutmudah_template/")
+(setq *loc* "C:/layoutmudah_template")
 (setq *pbtkla* "LAYOUT_PBT_KLARIFIKASI_TEMPLATE.dwg")
 (setq *pbt* "LAYOUT_PETA_PBT_TEMPLATE.dwg")
 (setq *petakerja* "LAYOUT_PETA_KERJA_TEMPLATE.dwg")
