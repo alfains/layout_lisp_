@@ -5,38 +5,10 @@
 
 ;nyanyaon
 
-(setq *loc* "C:/layout")
+(setq *loc* "C:/layoutmudah_template/")
 (setq *pbtkla* "LAYOUT_PBT_KLARIFIKASI_TEMPLATE.dwg")
 (setq *pbt* "LAYOUT_PETA_PBT_TEMPLATE.dwg")
 (setq *petakerja* "LAYOUT_PETA_KERJA_TEMPLATE.dwg")
-
-(defun download( URL / acadObj doc Utility DestFile)
-    (setq acadObj (vlax-get-acad-object))
-    (setq doc (vla-get-ActiveDocument acadObj))
-
-    (setq Utility (vla-get-Utility doc))   ;; Connect to Utility object
-    
-    (if (/= URL "")
-      (progn
-        (if (= (vla-IsURL Utility URL) :vlax-false)
-	        (alert "The URL you entered is not valid.  Make sure the syntax is a valid URL.")
-		      (vla-GetRemoteFile Utility URL 'DestFile :vlax-true)
-	      )
-        DestFile
-	    )
-    )
-)
-
-(defun c:downloadlayout()
-  (setvar "SECUREREMOTEACCESS" 0)
-  (setq locpbtkla (download "https://alfains.github.io/layout_lisp_/templates/20230411_LAYOUT_PBT_KLARIFIKASI_TEMPLATE_V2.dwg"))
-  (setq locpbt (download "https://alfains.github.io/layout_lisp_/templates/20230510_LAYOUT_PETA_PBT_TEMPLATE.dwg"))
-  (setq locpetakerja (download "https://alfains.github.io/layout_lisp_/templates/20230406_LAYOUT_PETA_KERJA_TEMPLATE_V2.dwg"))
-  
-  (vl-file-copy locpbtkla (strcat *loc* "/" *pbtkla*))
-  (vl-file-copy locpbt (strcat *loc* "/" *pbt*))
-  (vl-file-copy locpetakerja (strcat *loc* "/" *petakerja*))
-)
 
 (defun c:setthemefolder()
     (setq *loc* (getstring T "Lokasi Folder : <C:\\layout>"))
@@ -241,16 +213,4 @@
 
   (command "._-ATTEDIT" "N" "N" "ket2" "skala" "" "500" sc)
   (graphscr);edit attr nomor peta dan skala
-)
-
-(if (= (atoi (substr (ver) 13)) 2021) 
-  (progn
-    (vl-load-com)
-    (setvar "TRUSTEDDOMAINS" (strcat (getvar "TRUSTEDDOMAINS") ";alfains.github.io/*"))
-    (prompt "app load success")
-    (init)
-  )
-  (progn
-    (prompt "Use 2021 Only") 
-  )
 )
