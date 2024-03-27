@@ -98,9 +98,7 @@
     (setq g6 (polar g0 (* 0.5 pi) lgrid2))
     (setq g7 (polar g0 (* 1.5 pi) lgrid1))
     (setq g8 (polar g0 (* 1.5 pi) lgrid2))
-
-      
-      
+ 
     (command "color" 255)
     (command "layer" "M" "GRIDKOORD" "")
     (command "point" g0)
@@ -174,9 +172,8 @@
    (setq PXl PXl)
    (setq PYl (+ PYl jgrid))
    (setq g0l (list PXl PYl))
-  )
-    
- ;grid 
+  );grid 
+  
   (repeat baris
     (setq g0 (list PX1 PY1))
     (repeat kolom
@@ -184,10 +181,10 @@
       (setq PX1 (+ PX1 jgrid))
       (setq PY1 PY1)
       (setq g0 (list PX1 PY1))
-    )					;kolom
+    );kolom
     (setq PX1 (- PX1 (* jgrid kolom)))
     (setq PY1 (+ PY1 jgrid))
-  )					;baris
+  );baris
   ;membuat label grid
   
   (cond 
