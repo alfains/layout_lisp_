@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DG97XGEVE4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DG97XGEVE4');
+    </script>
+    <script type="text/javascript" src="https://webrtcgame.github.io/AutoCAD-Javascript-API/Autodesk.AutoCAD.js"></script>
+    <title>LAYOUT LISP - NTB</title>
+    <script>
+        function error() {
+            alert("error");
+        }
+
+        function success(arg) {
+            console.log(arg);
+        }
+
+        function remove() {
+            localStorage.clear();
+        }
+
+        function enableApp(arg) {
+            if(arg._value == 0) {
+                console.log("exit");
+                return;
+            }
+            const installBtn = document.getElementById('installbtn');
+            pbtKlaBtn.disabled = false;
+            petaKerjaBtn.disabled = false;
+            pbtBtn.disabled = false;
+            installBtn.classList.remove("green");
+            installBtn.disabled = true;
+        }
+
+        function checkTemplates() {
+            Acad.Editor.executeCommand("CHECKTEMPLATES");
+            Acad.SystemVariableCollection.getSystemVariable("REGENMODE").then(enableApp, error);
+        }
+
+        function install() {
+            Acad.Editor.executeCommand("DOWNLOADLAYOUT");
+            enableApp({_value: 1});
+        }
+
+        function addCounterPeta() {
+            const nopeta = document.getElementById('nopeta');
+            nopeta.value = new Number(nopeta.value) + 1;
+        }
+
+        function buatPBTKla(nopeta, nopengumuman, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA B ${nopeta} ${nopengumuman} ${skala}`);
+            addCounterPeta();
+        }
+
+        function buatPBT(nopeta, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA T ${nopeta} ${skala}`);
+            addCounterPeta();
+        }
+
+        function buatPetaKerja(nopeta, skala) {
+            Acad.Editor.executeCommand(`LAYOUTPETA K ${nopeta} ${skala}`);
+            addCounterPeta();
+        }
+
+        function changeThemeLocation(loc) {
+            Acad.Editor.executeCommandAsync(`SETTHEMEFOLDER ${loc}`);
+        }
+
+        function init() {
+            const pbtKlaBtn = document.getElementById("pbtKlaBtn");
+            const petaKerjaBtn = document.getElementById("petaKerjaBtn");
+            const pbtBtn = document.getElementById("pbtBtn");
+            const openFolderBtn = document.getElementById("bukaFolder");
+
+            pbtKlaBtn.disabled = true;
+            petaKerjaBtn.disabled = true;
+            pbtBtn.disabled = true;
+
+            const templateLocInput = document.getElementById("locfolder");
+            const nopeta = document.getElementById("nopeta");
+            const nopengumuman = document.getElementById("nopengumuman");
+            const skala = document.getElementById("skala");
+
+
+            templateLocInput.addEventListener("change", ev => changeThemeLocation(templateLocInput.value));
+            openFolderBtn.addEventListener("click", ev => {
+                let locationVal = templateLocInput.value;
+                locationVal = locationVal.replace(new RegExp("/", "g"), `\\\\`);
+                Acad.Editor.executeCommand(`(startapp "explorer /e," "${locationVal}")`);
+            });
+
+            pbtKlaBtn.addEventListener("click", ev => buatPBTKla(nopeta.value, nopengumuman.value, skala.value));
+            pbtBtn.addEventListener("click", ev => buatPBT(nopeta.value, skala.value));
+            petaKerjaBtn.addEventListener("click", ev => buatPetaKerja(nopeta.value, skala.value));
+            
+        }
+
+        window.addEventListener("DOMContentLoaded", (event) => {
+            checkTemplates();
+            init();
+        });
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <button class="action-button" onclick='window.location.reload()'>Reload</button>
+    <button class="action-button green" id="installbtn" onclick='install()'>Download</button>
+    <button class="action-button" onclick='remove()'>Close</button>
+    <h1>Tools Layout</h1>
+    <section class="tools">
+        <div class="input">
+            <label for="locfolder">Folder Layout</label>
+            <input type="text" id="locfolder" name="locfolder" value="C:/layout">
+            <button class="action-button-2" id="bukaFolder">Buka Folder</button>
+        </div>
+        <div class="input">
+            <label for="kantah">Kantor Pertanahan</label>
+            <input type="text" id="kantah" name="kantah" value="Kota Mataram">
+        </div>
+        <div class="input">
+            <label for="nopeta">No Peta</label>
+            <input type="number" id="nopeta" name="nopeta" value="1">
+        </div>
+        <div class="input">
+            <label for="nopengumuman">No Pengumuman</label>
+            <input type="number" id="nopengumuman" name="nopengumuman" value="1">
+        </div>
+        <div class="input">
+            <label for="skala">Skala</label>
+            <select id="skala" name="skala" size="4">
+                <option value="100">1:100</option>
+                <option value="250">1:250</option>
+                <option value="500" selected>1:500</option>
+                <option value="1000">1:1000</option>
+                <option value="2500">1:2500</option>
+                <option value="5000">1:5000</option>
+            </select>
+        </div>
+    </section>
+    <div class="action--section">
+        <button id="pbtKlaBtn" class="action-button">Buat PBT Klarifikasi</button>
+        <button id="petaKerjaBtn" class="action-button">Buat Peta Kerja</button>
+        <button id="pbtBtn" class="action-button">Buat PBT</button>
+    </div>
+    <section id="credits">
+        <p>© 2023 NTB - Alfainz : Nyanyaon
+        </p>
+    </section>
+</body>
+
+</html>
